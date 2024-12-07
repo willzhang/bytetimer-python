@@ -1,0 +1,10 @@
+name: 'transtime-python'
+
+services:
+  bytetimer-python:
+    container_name: bytetimer-python
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0

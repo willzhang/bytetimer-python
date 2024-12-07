@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据传输耗时计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .input-container input {
+            width: 60%;  /* 增加输入框宽度 */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .input-container select {
+            width: 30%;  /* 减小单位框宽度 */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            width: 45%;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+        .input-container label {
+            width: 20%;  /* 左侧标签的宽度 */
+            font-size: 16px;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>数据传输耗时计算器</h1>
+
+    <form method="POST">
+        <div class="form-group input-container">
+            <label for="data_size">数据量：</label>
+            <input type="number" name="data_size" id="data_size" value="{{ data_size }}" required>
+            <select name="data_unit" id="data_unit">
+                <option value="TB" {% if data_unit == 'TB' %}selected{% endif %}>TB</option>
+                <option value="GB" {% if data_unit == 'GB' %}selected{% endif %}>GB</option>
+                <option value="MB" {% if data_unit == 'MB' %}selected{% endif %}>MB</option>
+                <option value="KB" {% if data_unit == 'KB' %}selected{% endif %}>KB</option>
+                <option value="B" {% if data_unit == 'B' %}selected{% endif %}>B</option>
+            </select>
+        </div>
+
+        <div class="form-group input-container">
+            <label for="bandwidth">带宽：</label>
+            <input type="number" name="bandwidth" id="bandwidth" value="{{ bandwidth }}" required>
+            <select name="bandwidth_unit" id="bandwidth_unit">
+                <option value="TBps" {% if bandwidth_unit == 'TBps' %}selected{% endif %}>TBps</option>
+                <option value="GBps" {% if bandwidth_unit == 'GBps' %}selected{% endif %}>GBps</option>
+                <option value="Mbps" {% if bandwidth_unit == 'Mbps' %}selected{% endif %}>Mbps</option>
+                <option value="kbps" {% if bandwidth_unit == 'kbps' %}selected{% endif %}>kbps</option>
+                <option value="bps" {% if bandwidth_unit == 'bps' %}selected{% endif %}>bps</option>
+            </select>
+        </div>
+
+        <div class="button-container">
+            <button type="submit">计算传输时间</button>
+            <button type="button" onclick="resetForm()">重置</button>
+        </div>
+    </form>
+
+    {% if transfer_time %}
+        <div class="result">
+            传输时间为：{{ transfer_time }}
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function resetForm() {
+        document.getElementById('data_size').value = '';
+        document.getElementById('bandwidth').value = '';
+        document.getElementById('data_unit').selectedIndex = 0;
+        document.getElementById('bandwidth_unit').selectedIndex = 0;
+        document.querySelector('.result')?.remove(); // 清除计算结果
+        document.querySelector('.error')?.remove(); // 清除错误信息
+    }
+</script>
+
+</body>
+</html>
